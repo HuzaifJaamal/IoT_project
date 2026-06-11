@@ -13,7 +13,7 @@ class HomeViewModel extends GetxController {
   }
 
   void gotoCarrierDashboard() {
-
+    // Get.offAllNamed(AppRoutes.carrierDashboard);
     Get.toNamed(AppRoutes.carrierDashboard);
 
   }

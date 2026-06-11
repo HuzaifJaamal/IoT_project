@@ -10,12 +10,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.home,
       page: () => HomeView(),
-      binding: AppBinding(),
+      // binding: AppBinding(),
     ),
     GetPage(
       name: AppRoutes.observerDashboard,
       page: () => ObserverDashboardView(),
-      binding: AppBinding(),
+      // binding: AppBinding(),
     ),
     GetPage(
       name: AppRoutes.carrierDashboard,

@@ -17,6 +17,7 @@ class HomeView
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: AppColors.white,
 
       body: SafeArea(
         child: Padding(
@@ -27,15 +28,15 @@ class HomeView
             children: [
 
               /// LOGO
-              SvgIcon(
+              /*SvgIcon(
                 AppAssets.logo,
                 size: 28,
                 color: AppColors.primary,
-              ),
-              /*Image.asset(
-                "assets/logo.png",
-                height: 140,
               ),*/
+              Image.asset(
+                AppAssets.appLogo,
+                height: 140,
+              ),
 
               const SizedBox(height: 40),
 
@@ -60,7 +61,7 @@ class HomeView
 
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                    const Color(0xff2CA294),
+                    AppColors.lightSecondary,
                   ),
 
                   child: const Text(
@@ -82,7 +83,7 @@ class HomeView
 
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                    Colors.blueGrey,
+                    AppColors.secondary,
                   ),
 
                   child: const Text(

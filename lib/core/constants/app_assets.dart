@@ -6,6 +6,7 @@ class AppAssets {
   static const String logo = "${_svg}ic_logo.svg";
 
   /// PNG/JPG Images (if still needed)
+  static const String appLogo = "${_images}logo.png";
   /*static const String appLogo = "${_images}logo.png";
   static const String doctor = "${_images}doctor.png";*/
 }

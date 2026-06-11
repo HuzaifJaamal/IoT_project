@@ -5,13 +5,16 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../routes/app_routes.dart';
 import 'carrier_dashboard_viewmodel.dart';
 
-const String targetDeviceName = "NanoSensor";
+const String targetDeviceName = "T🌡️track";
 
 class BluetoothViewModel extends GetxController {
 
-  final dashboard = Get.put(CarrierDashboardViewModel());
+  // final dashboard = Get.put(CarrierDashboardViewModel());
+  final CarrierDashboardViewModel dashboard =
+  Get.find<CarrierDashboardViewModel>();
 
   var isScanning = false.obs;
 
@@ -239,8 +242,26 @@ class BluetoothViewModel extends GetxController {
             isConnecting.value = false;
             isConnected.value = true;
 
-            Get.back(); // close bottom sheet safely here
+            if (Get.isBottomSheetOpen ?? false) {
+              Get.back();
+            }// close bottom sheet safely here
           }
+        }
+        else if (state ==
+            BluetoothConnectionState.disconnected) {
+
+          if (!_disconnectHandled) {
+
+            _disconnectHandled = true;
+            dashboard.updateConnection(false);
+            isConnected.value = false;
+
+            Get.snackbar(
+              "Disconnected",
+              "Device disconnected",
+            );
+          }
+
         }
       });
 
@@ -293,7 +314,7 @@ class BluetoothViewModel extends GetxController {
 
       if (state == BluetoothConnectionState.connected) {
 
-        print("Connected SUCCESS ✅");
+        print("Connected SUCCESS ✅✅✅");
 
         isConnected.value = true;
 
@@ -321,6 +342,8 @@ class BluetoothViewModel extends GetxController {
   Future<void> _discoverServices(BluetoothDevice device) async {
     isConnected.value = true;
 
+    dashboard.startUploadTimer();
+
     final services = await device.discoverServices();
     print("Services found: ${services.length}");
 
@@ -334,7 +357,14 @@ class BluetoothViewModel extends GetxController {
         final uuid = characteristic.uuid.toString().toLowerCase();
         print("Characteristic: ${characteristic.uuid}");
 
-        if (uuid == "19b10001-e8f2-537e-4f6c-d104768a1214") {
+
+        /// This is for the Nano 33 ble
+        /*if (uuid == "19b10001-e8f2-537e-4f6c-d104768a1214") {
+          sensorChar = characteristic;
+        }*/
+
+        /// This is for the ESP32 S3
+        if (uuid == "abcdefab-1234-5678-1234-abcdefabcdef") {
           sensorChar = characteristic;
         }
 
@@ -469,6 +499,7 @@ class BluetoothViewModel extends GetxController {
           print("Auto reconnect lost");
 
           isConnected.value = false;
+          dashboard.pauseUploadTimer();
         }
 
       });
@@ -495,6 +526,7 @@ class BluetoothViewModel extends GetxController {
         connectedDevice = null; // ✅ reset
         dashboard.updateConnection(false);
         isConnected.value = false;
+        dashboard.pauseUploadTimer();
 
         print("Disconnected manually ❌");
 
@@ -522,6 +554,10 @@ class BluetoothViewModel extends GetxController {
 
     super.onClose();
 
+  }
+  void goToHomeScreen() {
+    Get.offAllNamed(AppRoutes.home);
+    dashboard.stopUploadTimer();
   }
 }
 

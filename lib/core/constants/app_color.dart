@@ -18,6 +18,7 @@ class AppColors {
   static const Color orange = Colors.orange;
   static const Color green = Colors.green;
   static const Color darkSurface = Color(0xff1E2E2B);
+  static const Color white = Color(0xffFFFFFF);
 
   // static Color blueAquamarine = Color(0xff70E3D6);
   // static Color blueLightSky = Color(0xffB7FFFA);
